@@ -104,10 +104,10 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke
 .cap-chip mark{background:#FFE08A;border-radius:4px;padding:0 2px}
 
 /* lasso stroke shared */
-.ants{fill:none;stroke:#fff;stroke-linejoin:round;stroke-linecap:round;animation:march 1s linear infinite}
-.ants-b{fill:none;stroke:rgba(17,19,24,.55);stroke-linejoin:round}
+.ants{fill:none;stroke:rgba(255,255,255,.9);stroke-linejoin:round;stroke-linecap:round;animation:march 3s linear infinite}
+.ants-b{fill:none;stroke:rgba(17,19,24,.35);stroke-linejoin:round}
 .draw{fill:none;stroke:#fff;stroke-linejoin:round;stroke-linecap:round}
-@keyframes march{to{stroke-dashoffset:-48}}
+@keyframes march{to{stroke-dashoffset:-30}}
 
 /* cards */
 .progress{display:flex;align-items:center;gap:10px;padding:6px 14px 0 22px;flex:none}
@@ -166,7 +166,7 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke
 .capfront small{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}
 .lzw{position:relative;white-space:nowrap}
 .lzw svg{position:absolute;left:-10px;top:-8px;width:calc(100% + 20px);height:calc(100% + 16px);overflow:visible}
-.lzw path{fill:none;stroke:var(--hide);stroke-width:2.2;stroke-linecap:round}
+.lzw path{fill:none;stroke:var(--hide);stroke-width:1.3;stroke-linecap:round}
 .front.capf h2,.front.capf .one,.front.capf .kicker{color:var(--ink)}
 .front.capf .shade{display:none}
 .front.capf .tap{background:var(--soft);color:var(--ink-2)}
@@ -300,9 +300,9 @@ svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke
 .fx.on{opacity:1}
 .fx-sil{filter:drop-shadow(0 0 1px rgba(0,0,0,.15))}
 .fxsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.warnpath{fill:none;stroke:#FFB547;stroke-dasharray:10 7;opacity:0;transition:opacity .4s;vector-effect:non-scaling-stroke;stroke-width:2!important}
-.warnpath.on{opacity:.95;animation:march 1.2s linear infinite}
-.flashpath{fill:none;stroke:#fff;opacity:0;vector-effect:non-scaling-stroke;stroke-width:2.5!important;stroke-linecap:round;stroke-linejoin:round}
+.warnpath{fill:none;stroke:#FFB547;stroke-dasharray:5 5;opacity:0;transition:opacity .4s;vector-effect:non-scaling-stroke;stroke-width:1.2!important}
+.warnpath.on{opacity:.9;animation:march 3s linear infinite}
+.flashpath{fill:none;stroke:#fff;opacity:0;vector-effect:non-scaling-stroke;stroke-width:1.3!important;stroke-linecap:round;stroke-linejoin:round}
 .warnchip{position:absolute;transform:translate(-50%,0);background:rgba(255,181,71,.96);color:#3A2400;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;opacity:0;transition:opacity .4s;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .warnchip.on{opacity:1}
 .caption .m.gen{color:#2F6BFF;background:#EAF0FF;border-radius:5px;padding:0 3px}
@@ -537,9 +537,9 @@ function startAnalyze(){go('analyze'); CAPTION=$('#caption').value||CAP_TEXT;
  let n=0;
  CARDS.filter(c=>c.lasso).forEach((c,i)=>setTimeout(()=>{
   const pts=c.lasso.map(([x,y])=>[+(ox+x*s).toFixed(1),+(oy+y*s).toFixed(1)]); const d=smooth(pts);
-  const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',d); p.setAttribute('class','draw'); p.setAttribute('stroke-width','2.4'); svg.appendChild(p);
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',d); p.setAttribute('class','draw'); p.setAttribute('stroke-width','1.3'); svg.appendChild(p);
   const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; p.getBoundingClientRect(); p.style.transition='stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)'; p.style.strokeDashoffset=0;
-  setTimeout(()=>{p.style.transition='none'; p.style.strokeDasharray='8 6'; p.setAttribute('class','ants'); p.style.strokeDashoffset=0;},720);
+  setTimeout(()=>{p.style.transition='none'; p.style.strokeDasharray='5 5'; p.setAttribute('class','ants'); p.style.strokeDashoffset=0;},720);
   const b=bbox(pts); const lab=document.createElement('div'); lab.className='lab'; lab.textContent=c.tag; lab.style.left=Math.max(8,Math.min(W-60,b[0]))+'px'; lab.style.top=Math.max(8,b[1]-26)+'px'; scan.appendChild(lab); setTimeout(()=>lab.classList.add('on'),400);
   n++; $('#scan-sub').textContent='단서 '+n+'개 발견';},450+i*520));
  const t0=450+5*520;
@@ -610,13 +610,13 @@ function layoutFront(el,animate){const c=CARDS[+el.dataset.i]; const front=el.qu
  tx=Math.min(0,Math.max(W-IW*base*z,tx)); ty=Math.min(0,Math.max(H-IH*base*z,ty));
  const startT=`translate(${ox}px,${oy}px) scale(1)`, endT=`translate(${tx}px,${ty}px) scale(${z})`;
  const draw=front.querySelector('.draw'),ants=front.querySelector('.ants'),antsB=front.querySelector('.ants-b');
- const sw0=2.6/base, sw1=2.2/(base*z);
- const setAnts=sw=>{ants.setAttribute('stroke-width',sw);antsB.setAttribute('stroke-width',sw);ants.style.strokeDasharray=`${7/ (base*z)} ${5/(base*z)}`;antsB.style.strokeDasharray='none';ants.style.animationDuration='1s';};
+ const sw0=1.5/base, sw1=1.2/(base*z);
+ const setAnts=sw=>{ants.setAttribute('stroke-width',sw);antsB.setAttribute('stroke-width',sw);ants.style.strokeDasharray=`${5/(base*z)} ${5/(base*z)}`;antsB.style.strokeDasharray='none';ants.style.animationDuration='3s';};
  if(!animate){lw.style.transition='none';lw.style.transform=endT;front.classList.add('on');setAnts(sw1);draw.style.opacity=0;return;}
  front.classList.remove('on'); lw.style.transition='none'; lw.style.transform=startT; draw.setAttribute('stroke-width',sw0); draw.style.opacity=1;
  const L=draw.getTotalLength(); draw.style.transition='none'; draw.style.strokeDasharray=L; draw.style.strokeDashoffset=L; draw.getBoundingClientRect();
  requestAnimationFrame(()=>{draw.style.transition='stroke-dashoffset 1.1s cubic-bezier(.45,0,.2,1)'; draw.style.strokeDashoffset=0;});
- clearTimeout(el._t); el._t=setTimeout(()=>{lw.style.transition=''; lw.style.transform=endT; setAnts(sw1); front.classList.add('on');},1150);}
+ clearTimeout(el._t); el._t=setTimeout(()=>{lw.style.transition=''; lw.style.transform=endT; setAnts(sw1); front.classList.add('on'); draw.style.transition='opacity .3s'; draw.style.opacity=0;},1150);}
 function drawCapLasso(front){front.querySelectorAll('.lzw path').forEach((p,i)=>{const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; p.getBoundingClientRect(); setTimeout(()=>{p.style.transition='stroke-dashoffset .8s ease-out'; p.style.strokeDashoffset=0;},300+i*600);});}
 
 function buildDeck(){idx=0; history.length=0; for(const k in decision) delete decision[k]; renderDeck(true); $('#btn-undo').disabled=true;}
